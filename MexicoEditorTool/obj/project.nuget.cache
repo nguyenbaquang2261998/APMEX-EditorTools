@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "8i71j+gJsMspEOYhUtsQINeVxmlkRhSx5eE5e8tAPBqeagTcaERtdwKNflborpqUUKGsvPhgWhC+0LO0dsweZA==",
+  "dgSpecHash": "76BZPx0fGwPrzqvY2utd36NZE0SKB6W3Wxra4goIoqm4bp4/cH9AZZi2AbNXFU5T1rBzDvJAyg0bQaXKEPCiCg==",
   "success": true,
   "projectFilePath": "C:\\Users\\QuangNB\\source\\repos\\MexicoEditorTool\\MexicoEditorTool\\MexicoEditorTool.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\QuangNB\\.nuget\\packages\\htmlagilitypack\\1.11.34\\htmlagilitypack.1.11.34.nupkg.sha512",
     "C:\\Users\\QuangNB\\.nuget\\packages\\npgsql\\5.0.7\\npgsql.5.0.7.nupkg.sha512",
     "C:\\Users\\QuangNB\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.6.0\\system.runtime.compilerservices.unsafe.4.6.0.nupkg.sha512"
   ],

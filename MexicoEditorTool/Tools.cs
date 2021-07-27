@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using Npgsql;
 using MexicoEditorTool.Models;
+using System.Linq;
+
 namespace MexicoEditorTool
 {
     public partial class Tools : Form
@@ -20,8 +22,31 @@ namespace MexicoEditorTool
 
         private void button1_Click(object sender, EventArgs e)
         {
-            List<Articles> articlesList = new List<Articles>();
             connection.Open();
+            var articlesList =  this.GetArticles().Where(a => a.OptimizedContent.Contains("<img") && !a.OptimizedContent.Contains("lazy-load"));
+            if (articlesList != null)
+            {
+                foreach (var item in articlesList)
+                {
+                    if (!string.IsNullOrEmpty(item.OptimizedContent))
+                    {
+                        // Hoàn nguyên lại optimized Content ban đầu.
+                        string oldLinkOptimizedContent = item.OptimizedContent.Replace("<img class=\"lazy-load\"", "<img")
+                            .Replace("data-src=\"https://img", "src=\"https://img");
+                        // Add lazy load.
+                        string newLinkOptimizedContent = oldLinkOptimizedContent.Replace("<img", "<img class=\"lazy-load\"")
+                            .Replace("src=\"https://img", "data-src=\"https://img");
+                        UpdateContent(newLinkOptimizedContent, item.Id);
+                    }
+                }
+            }
+            connection.Close();
+            LoadForm();
+            MessageBox.Show("Cập nhật thành công", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        private List<Articles> GetArticles()
+        {
+            List<Articles> articlesList = new List<Articles>();
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = connection;
             command.CommandType = CommandType.Text;
@@ -36,23 +61,7 @@ namespace MexicoEditorTool
             }
             dataReader.Close();
             command.Dispose();
-
-            foreach (var item in articlesList)
-            {
-                if (!string.IsNullOrEmpty(item.OptimizedContent) && item.OptimizedContent.Contains("<img") && !item.OptimizedContent.Contains("lazy-load"))
-                {
-                    // Hoàn nguyên lại optimized Content ban đầu.
-                    string oldLinkOptimizedContent = item.OptimizedContent.Replace("<img class=\"lazy-load\"", "<img")
-                        .Replace("data-src=\"https://img", "src=\"https://img");
-                    // Add lazy load.
-                    string newLinkOptimizedContent = oldLinkOptimizedContent.Replace("<img", "<img class=\"lazy-load\"")
-                        .Replace("src=\"https://img", "data-src=\"https://img");
-                    UpdateContent(newLinkOptimizedContent , item.Id);
-                }
-            }
-            connection.Close();
-            LoadForm();
-            MessageBox.Show("Cập nhật thành công", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return articlesList;
         }
         private void UpdateContent(string content, int articleId) {
             string updateContent = "\'"+ content +"\'";
