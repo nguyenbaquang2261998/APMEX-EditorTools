@@ -18,6 +18,8 @@ namespace MexicoEditorTool
         {
             InitializeComponent();
             LoadForm();
+            var listColumnName = GetComboBoxColumn();
+            cbColumn.DataSource = listColumnName;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -46,11 +48,12 @@ namespace MexicoEditorTool
         }
         private List<Articles> GetArticles()
         {
+            var condition = cbColumn.SelectedItem;
             List<Articles> articlesList = new List<Articles>();
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = connection;
             command.CommandType = CommandType.Text;
-            command.CommandText = "select id, optimizedcontent from articles";
+            command.CommandText = "select id, "+ condition +" from articles";
             NpgsqlDataReader dataReader = command.ExecuteReader();
             DataTable dataTable = new DataTable();
             dataTable.Load(dataReader);
@@ -97,6 +100,29 @@ namespace MexicoEditorTool
             }
             command.Dispose();
             connection.Close();
+        }
+        private List<string> GetComboBoxColumn()
+        {
+            connection.Open();
+            List<string> listColumnName = new List<string>();
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = connection;
+            command.CommandType = CommandType.Text;
+            command.CommandText = "SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'articles';";
+            NpgsqlDataReader dataReader = command.ExecuteReader();
+            DataTable dataTable = new DataTable();
+            dataTable.Load(dataReader);
+            foreach (DataRow item in dataTable.Rows)
+            {
+                string columnName = item["column_name"].ToString();
+                listColumnName.Add(columnName);
+            }
+            dataReader.Close();
+            command.Dispose();
+            connection.Close();
+            // Tạm thời làm với Content.
+            var results = listColumnName.Where(x => x.Contains("content")).ToList();
+            return results;
         }
     }
 }

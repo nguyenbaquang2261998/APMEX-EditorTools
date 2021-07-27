@@ -69,7 +69,7 @@ namespace MexicoEditorTool
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 29F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(236, 120);
+            this.label1.Location = new System.Drawing.Point(153, 81);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(337, 52);
             this.label1.TabIndex = 0;
@@ -306,17 +306,17 @@ namespace MexicoEditorTool
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(624, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "articleMenu";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button1.Location = new System.Drawing.Point(338, 186);
+            this.button1.BackColor = System.Drawing.Color.OrangeRed;
+            this.button1.Location = new System.Drawing.Point(215, 161);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(124, 40);
+            this.button1.Size = new System.Drawing.Size(207, 42);
             this.button1.TabIndex = 2;
             this.button1.Text = "Go to tool";
             this.button1.UseVisualStyleBackColor = false;
@@ -326,7 +326,7 @@ namespace MexicoEditorTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(624, 343);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
