@@ -36,7 +36,7 @@ namespace MexicoEditorTool
                         string oldLinkOptimizedContent = item.OptimizedContent.Replace("<img class=\"lazy-load\"", "<img")
                             .Replace("data-src=\"https://img", "src=\"https://img");
                         // Add lazy load.
-                        string newLinkOptimizedContent = oldLinkOptimizedContent.Replace("<img", "<img class=\"lazy-load\"")
+                        string newLinkOptimizedContent = oldLinkOptimizedContent.Replace("<img", "<img class=\"lazy-load\" src=\"data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==\"")
                             .Replace("src=\"https://img", "data-src=\"https://img");
                         UpdateContent(newLinkOptimizedContent, item.Id);
                     }
@@ -121,7 +121,7 @@ namespace MexicoEditorTool
             command.Dispose();
             connection.Close();
             // Tạm thời làm với Content.
-            var results = listColumnName.Where(x => x.Contains("content")).ToList();
+            var results = listColumnName.Where(x => x.Contains("optimizedcontent")).ToList();
             return results;
         }
     }
