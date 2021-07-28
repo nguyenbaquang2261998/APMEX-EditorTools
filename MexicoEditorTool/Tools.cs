@@ -8,12 +8,14 @@ using System.Windows.Forms;
 using Npgsql;
 using MexicoEditorTool.Models;
 using System.Linq;
+using System.Configuration;
 
 namespace MexicoEditorTool
 {
     public partial class Tools : Form
     {
-        NpgsqlConnection connection = new NpgsqlConnection("Server=172.16.0.79;Port=5432;User Id=user_dev;Password=45-C8-2A-38-43-CA;Database=automexico_dev;CommandTimeout=320");
+        NpgsqlConnection connection = new NpgsqlConnection(ConfigurationManager.AppSettings["ConnectionString"]);
+        string table = ConfigurationManager.AppSettings["TableName"];
         public Tools()
         {
             InitializeComponent();
@@ -53,7 +55,7 @@ namespace MexicoEditorTool
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = connection;
             command.CommandType = CommandType.Text;
-            command.CommandText = "select id, "+ condition +" from articles";
+            command.CommandText = "select id, "+ condition +" from "+ table +"";
             NpgsqlDataReader dataReader = command.ExecuteReader();
             DataTable dataTable = new DataTable();
             dataTable.Load(dataReader);
@@ -90,7 +92,7 @@ namespace MexicoEditorTool
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = connection;
             command.CommandType = CommandType.Text;
-            command.CommandText = "select id, title, optimizedcontent from articles";
+            command.CommandText = "select id, title, optimizedcontent from "+ table +"";
             NpgsqlDataReader dataReader = command.ExecuteReader();
             if (dataReader.HasRows)
             {
@@ -105,24 +107,25 @@ namespace MexicoEditorTool
         {
             connection.Open();
             List<string> listColumnName = new List<string>();
-            NpgsqlCommand command = new NpgsqlCommand();
-            command.Connection = connection;
-            command.CommandType = CommandType.Text;
-            command.CommandText = "SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'articles';";
-            NpgsqlDataReader dataReader = command.ExecuteReader();
-            DataTable dataTable = new DataTable();
-            dataTable.Load(dataReader);
-            foreach (DataRow item in dataTable.Rows)
-            {
-                string columnName = item["column_name"].ToString();
-                listColumnName.Add(columnName);
-            }
-            dataReader.Close();
-            command.Dispose();
+            //NpgsqlCommand command = new NpgsqlCommand();
+            //command.Connection = connection;
+            //command.CommandType = CommandType.Text;
+            //command.CommandText = "SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '"+ table +"';";
+            //NpgsqlDataReader dataReader = command.ExecuteReader();
+            //DataTable dataTable = new DataTable();
+            //dataTable.Load(dataReader);
+            //foreach (DataRow item in dataTable.Rows)
+            //{
+            //    string columnName = item["column_name"].ToString();
+            //    listColumnName.Add(columnName);
+            //}
+            //dataReader.Close();
+            //command.Dispose();
+            
+            //// Tạm thời làm với Content.
+            listColumnName.Add(ConfigurationManager.AppSettings["ColumnName"]);
             connection.Close();
-            // Tạm thời làm với Content.
-            var results = listColumnName.Where(x => x.Contains("optimizedcontent")).ToList();
-            return results;
+            return listColumnName;
         }
     }
 }
